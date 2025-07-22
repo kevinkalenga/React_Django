@@ -1,5 +1,5 @@
 import React from 'react'
-import {Navbar, Nav, Container, Row}from 'react-bootstrap'
+import {Navbar, Nav, Container}from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 
 function Header() {
@@ -22,7 +22,7 @@ function Header() {
                     <LinkContainer  to="/login">
                        <Nav.Link>
                            <i className='fas fa-user'></i>
-                            login
+                            Login
                        </Nav.Link>
                     </LinkContainer>
                  </Nav>
