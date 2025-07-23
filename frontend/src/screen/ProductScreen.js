@@ -1,36 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap';
 import Rating from '../components/Rating';
-import axios from 'axios';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import { listProductDetails } from '../actions/productActions';
+
+
+
 
 function ProductScreen() {
   const { id } = useParams();
-  const [product, setProduct] = useState({});
-  const [loading, setLoading] = useState(true); // Ajout d'un état de chargement
+  const dispatch = useDispatch();
+  const productDetails = useSelector((state) => state.productDetails || {});
+  const { loading, error, product } = productDetails;
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const { data } = await axios.get(`/api/products/${id}`);
-        setProduct(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Erreur lors de la récupération du produit :', error);
-        setLoading(false);
-      }
-    };
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
 
-    fetchProduct();
-  }, [id]);
-
-  if (loading || !product._id) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <Loader />;
+  if (error) return <Message variant="danger">{error}</Message>;
+  if (!product || Object.keys(product).length === 0) return <Message variant="warning">Produit introuvable</Message>;
 
   return (
     <div>
       <Link to='/' className='btn btn-light my-3'>Go Back</Link>
+
       <Row>
         <Col md={6}>
           <Image src={product.image} alt={product.name} fluid />
@@ -87,5 +84,4 @@ function ProductScreen() {
     </div>
   );
 }
-
-export default ProductScreen;
+export default ProductScreen
