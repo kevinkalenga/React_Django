@@ -6,8 +6,10 @@ const reducer = combineReducers({
 });
 
 const store = configureStore({
-    reducer: reducer, // ← c’est ici que tu dois utiliser ton combineReducers
-    // middleware, devTools, etc. peuvent aussi être ajoutés ici si nécessaire
+    reducer, // Thunk est déjà inclus par défaut ici
+    devTools: true
 });
 
 export default store;
+
+
